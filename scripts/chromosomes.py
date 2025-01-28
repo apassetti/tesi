@@ -36,7 +36,9 @@ def process_chromosome(chromosome):
         gene_output_file = os.path.join(gene_dir, f"{gene}.gtf")
         
         # Build the command to extract lines for the gene
-        cmd = f"""gunzip -c {gtf_file} | awk '$1 == "chr{chromosome}" && $3 == "exon"' | grep "{gene}" """
+        cmd = f"""gunzip -c {gtf_file} | awk '$1 == "chr{chromosome}" && $3 == "exon"' | sed 's/; /\t/g; s/;$//' | awk '$10 == "\\\"{gene}\\\""' | sort -k4,4V """
+
+
         
         # Execute the command
         try:
