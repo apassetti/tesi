@@ -13,7 +13,7 @@ output_file = os.path.expanduser(output_file)
 # Function to process a chromosome and append the count to the output file
 def process_chromosome(chromosome):
     # Build the command 
-    cmd = f"""gunzip -c {gtf_file} |awk '$1 == "chr{chromosome}" && $3 == "transcript"' | cut -f 9 | sed 's/; /\t/g; s/;$//' | cut -f 3 | sed 's/gene_name "\(.*\)"/\\1/' | uniq | wc -l"""
+    cmd = f"""gunzip -c {gtf_file} |awk '$1 == "chr{chromosome}" && $3 == "exon"' | cut -f 9 | sed 's/; /\t/g; s/;$//' | cut -f 1 | sed 's/gene_id "\(.*\)"/\\1/' | uniq | wc -l"""
     
     # Execute the command
     count = subprocess.check_output(cmd, shell=True).decode('utf-8').strip()
